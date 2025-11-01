@@ -3,14 +3,18 @@ import { useParallax } from '@vueuse/core';
 import { computed, type CSSProperties, useTemplateRef } from 'vue';
 
 const container = useTemplateRef("scp");
-const { tilt } = useParallax(container);
-const factor = 30;
+const { tilt, source } = useParallax(container);
+
+const factor = computed(() => {
+    if (source.value === 'deviceOrientation') return 50;
+    return 30;
+});
 
 const leftHandStyle = computed<CSSProperties>(() => ({
-    transform: `translateY(${tilt.value * factor}%)`,
+    transform: `translateY(${tilt.value * factor.value}%)`,
 }));
 const rightHandStyle = computed<CSSProperties>(() => ({
-    transform: `translateY(${-tilt.value * factor}%)`,
+    transform: `translateY(${-tilt.value * factor.value}%)`,
 }));
 </script>
 
